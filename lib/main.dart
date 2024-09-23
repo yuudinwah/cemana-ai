@@ -1,5 +1,6 @@
 import 'package:cemana/providers/provider.dart';
 import 'package:cemana/screens/screen.dart';
+import 'package:cemana/utils/CemanaColors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,10 +18,7 @@ class MyApp extends StatelessWidget {
       builder: (_, __) {
         return MaterialApp(
           title: 'Cemana',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
+          theme: CemanaColors.lightTheme,
           home: const MyHomePage(null),
           onGenerateRoute: (_) {
             String? q;
