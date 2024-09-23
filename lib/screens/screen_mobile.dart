@@ -41,14 +41,15 @@ class _ScreenMobileState extends State<ScreenMobile> {
                 backgroundColor: Colors.white,
                 title: Row(
                   children: [
-                    SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: Image.asset(
-                        "src/logo-cemana.png",
-                        fit: BoxFit.cover,
+                    if (widget.id == null)
+                      SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Image.asset(
+                          "src/logo-cemana.png",
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
                     Expanded(
                       child: Text(
                         "${room?.get(DataKey("name")) ?? "emana"}",
@@ -389,7 +390,7 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                               a.selectedInference,
                                     );
                                   },
-                                  child: Icon(Icons.send),
+                                  child: const Icon(Icons.send),
                                 ),
                               ],
                             ),
