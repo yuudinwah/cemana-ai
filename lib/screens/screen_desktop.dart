@@ -1,7 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:cemana/providers/provider.dart';
+import 'package:cemana/utils/file_util.dart';
 import 'package:datalocal/datalocal.dart';
 import 'package:datalocal/datalocal_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ScreenDesktop extends StatefulWidget {
@@ -16,7 +22,7 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
   bool minimize = false;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size!;
+    Size size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
     AppProvider a = Provider.of<AppProvider>(context);
@@ -149,10 +155,42 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                               width: 16,
                                             ),
                                             Expanded(
-                                              child: Text(
-                                                data.get(DataKey("name")) ??
-                                                    "-",
-                                                overflow: TextOverflow.ellipsis,
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      data.get(DataKey(
+                                                              "name")) ??
+                                                          "-",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 4),
+                                                    decoration: BoxDecoration(
+                                                      color: data.get(DataKey(
+                                                                  "inference.type")) ==
+                                                              "Image"
+                                                          ? Colors.blue
+                                                          : Colors.green,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    child: Text(
+                                                      data.get(DataKey(
+                                                              "inference.type")) ??
+                                                          "-",
+                                                      style: const TextStyle(
+                                                        fontSize: 10,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
@@ -316,85 +354,286 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                 vertical: 8,
                                               ),
                                               child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: [
-                                                  const Expanded(
-                                                    child: SizedBox(),
+                                                  const SizedBox(
+                                                    width: 16,
                                                   ),
-                                                  SizedBox(
-                                                    width: 600,
-                                                    child: Row(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                  Container(
+                                                    width: width,
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                      maxWidth: 600,
+                                                      minWidth: 200,
+                                                    ),
+                                                    child: Column(
                                                       children: [
-                                                        Builder(
-                                                          builder: (_) {
-                                                            if (role ==
-                                                                "user") {
-                                                              return Container(
-                                                                height: 30,
-                                                                width: 30,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .blue,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
+                                                        Row(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Builder(
+                                                              builder: (_) {
+                                                                if (role ==
+                                                                    "user") {
+                                                                  return Container(
+                                                                    height: 30,
+                                                                    width: 30,
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Colors
+                                                                          .blue,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
                                                                               100),
-                                                                ),
-                                                              );
-                                                            }
-                                                            if (role ==
-                                                                    "assistant" &&
-                                                                index > 0 &&
-                                                                datas[index - 1].get(
-                                                                        DataKey(
-                                                                            "message.role")) ==
-                                                                    "assistant") {
-                                                              return const SizedBox(
-                                                                height: 30,
-                                                                width: 30,
-                                                              );
-                                                            }
-                                                            return Container(
-                                                              height: 30,
-                                                              width: 30,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .purple,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
+                                                                    ),
+                                                                  );
+                                                                }
+                                                                if (role ==
+                                                                        "assistant" &&
+                                                                    index > 0 &&
+                                                                    datas[index -
+                                                                                1]
+                                                                            .get(DataKey("message.role")) ==
+                                                                        "assistant") {
+                                                                  return const SizedBox(
+                                                                    height: 30,
+                                                                    width: 30,
+                                                                  );
+                                                                }
+                                                                return Container(
+                                                                  height: 30,
+                                                                  width: 30,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: Colors
+                                                                        .purple,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
                                                                             100),
-                                                              ),
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                            );
-                                                          },
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 16,
-                                                        ),
-                                                        Expanded(
-                                                          child: Text(
-                                                            (data.get(DataKey(
-                                                                        "message.content")) ??
-                                                                    "")
-                                                                .toString(),
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 16,
+                                                                  ),
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
+                                                                );
+                                                              },
                                                             ),
-                                                          ),
+                                                            const SizedBox(
+                                                              width: 16,
+                                                            ),
+                                                            Expanded(
+                                                              child: Builder(
+                                                                builder: (_) {
+                                                                  if (data.get(
+                                                                          DataKey(
+                                                                              "message.type")) ==
+                                                                      "Image") {
+                                                                    return Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        SizedBox(
+                                                                          height:
+                                                                              250,
+                                                                          width:
+                                                                              250,
+                                                                          child:
+                                                                              ClipRRect(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(20),
+                                                                            child:
+                                                                                Image.memory(
+                                                                              base64Decode(data.get(DataKey("message.content")) ?? ""),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              50,
+                                                                          width:
+                                                                              250,
+                                                                          child:
+                                                                              Row(
+                                                                            children: [
+                                                                              const Expanded(
+                                                                                child: SizedBox(),
+                                                                              ),
+                                                                              InkWell(
+                                                                                onTap: () {
+                                                                                  FileUtil().saveFileFromBytes(context, bytes: base64Decode(data.get(DataKey("message.content")) ?? ""), name: "${DateTime.now()}.png");
+                                                                                },
+                                                                                child: Container(
+                                                                                  padding: const EdgeInsets.symmetric(
+                                                                                    horizontal: 16,
+                                                                                    vertical: 8,
+                                                                                  ),
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: Colors.purple,
+                                                                                    borderRadius: BorderRadius.circular(20),
+                                                                                  ),
+                                                                                  child: const Row(
+                                                                                    children: [
+                                                                                      Icon(
+                                                                                        Icons.download,
+                                                                                        color: Colors.white,
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        width: 8,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        "Download",
+                                                                                        style: TextStyle(
+                                                                                          color: Colors.white,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    );
+                                                                  }
+                                                                  return Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .end,
+                                                                    children: [
+                                                                      SizedBox(
+                                                                        width:
+                                                                            width,
+                                                                        child:
+                                                                            SelectableText(
+                                                                          (data.get(DataKey("message.content")) ?? "")
+                                                                              .toString(),
+                                                                          style:
+                                                                              const TextStyle(
+                                                                            fontSize:
+                                                                                16,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      if (role ==
+                                                                              "assistant" &&
+                                                                          data.get(DataKey("isFinished")) ==
+                                                                              true)
+                                                                        SizedBox(
+                                                                          width:
+                                                                              width,
+                                                                          height:
+                                                                              50,
+                                                                          child:
+                                                                              Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.end,
+                                                                            children: [
+                                                                              InkWell(
+                                                                                onTap: () async {
+                                                                                  String m = "";
+                                                                                  bool end = false;
+                                                                                  int i = 0;
+                                                                                  do {
+                                                                                    try {
+                                                                                      if (datas[index - i].get(DataKey("message.role")) == "user") {
+                                                                                        throw "";
+                                                                                      }
+                                                                                      m = "${datas[index - i].get(DataKey("message.content"))} \n $m";
+                                                                                      i++;
+                                                                                    } catch (e) {
+                                                                                      end = true;
+                                                                                    }
+                                                                                  } while (end == false);
+                                                                                  await Clipboard.setData(ClipboardData(text: m));
+                                                                                  double w;
+                                                                                  if (width < 720) {
+                                                                                    w = width - 32;
+                                                                                  } else {
+                                                                                    w = width - 32;
+                                                                                    if (w > 500) {
+                                                                                      w = 500;
+                                                                                    }
+                                                                                  }
+                                                                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                    width: w,
+                                                                                    content: const Text("Disimpan di papan clip"),
+                                                                                    backgroundColor: Colors.blue,
+                                                                                    behavior: SnackBarBehavior.floating,
+                                                                                    action: SnackBarAction(
+                                                                                      label: 'Tutup',
+                                                                                      disabledTextColor: Colors.white,
+                                                                                      textColor: Colors.yellow,
+                                                                                      onPressed: () {
+                                                                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                                      },
+                                                                                    ),
+                                                                                  ));
+                                                                                },
+                                                                                child: Container(
+                                                                                  padding: const EdgeInsets.symmetric(
+                                                                                    horizontal: 16,
+                                                                                    vertical: 8,
+                                                                                  ),
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: Colors.purple,
+                                                                                    borderRadius: BorderRadius.circular(20),
+                                                                                  ),
+                                                                                  child: const Row(
+                                                                                    children: [
+                                                                                      Icon(
+                                                                                        Icons.copy,
+                                                                                        color: Colors.white,
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        width: 8,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        "Salin",
+                                                                                        style: TextStyle(
+                                                                                          color: Colors.white,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                    ],
+                                                                  );
+                                                                },
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
+                                                        if (index ==
+                                                                datas.length -
+                                                                    1 &&
+                                                            a.chatLoading[widget
+                                                                    .id] ==
+                                                                true)
+                                                          Container(
+                                                            height: 45,
+                                                            width: 45,
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                              vertical: 8,
+                                                              horizontal: 16,
+                                                            ),
+                                                            child: Image.asset(
+                                                                "src/loading.gif"),
+                                                          ),
                                                       ],
                                                     ),
                                                   ),
-                                                  const Expanded(
-                                                    child: SizedBox(),
+                                                  const SizedBox(
+                                                    width: 16,
                                                   ),
                                                 ],
                                               ),
@@ -408,9 +647,10 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                               ),
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Expanded(
-                                  child: SizedBox(),
+                                const SizedBox(
+                                  width: 16,
                                 ),
                                 Builder(
                                   builder: (_) {
@@ -428,8 +668,12 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                         horizontal: 32,
                                         vertical: 8,
                                       ),
-                                      width: 720,
+                                      width: width,
                                       height: 80,
+                                      constraints: const BoxConstraints(
+                                        maxWidth: 720,
+                                        minWidth: 260,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: Colors.purple[50],
                                         borderRadius: BorderRadius.circular(80),
@@ -451,6 +695,8 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                               },
                                               decoration: const InputDecoration(
                                                 border: InputBorder.none,
+                                                hintText:
+                                                    "Apa yang ada di pikiran mu?",
                                               ),
                                               controller:
                                                   a.controller[widget.id ?? ""],
@@ -468,15 +714,15 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                         a.selectedInference,
                                               );
                                             },
-                                            child: Icon(Icons.send),
+                                            child: const Icon(Icons.send),
                                           ),
                                         ],
                                       ),
                                     );
                                   },
                                 ),
-                                const Expanded(
-                                  child: SizedBox(),
+                                const SizedBox(
+                                  width: 16,
                                 ),
                               ],
                             ),

@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="29" /> <!-- To write all files until API level 29. We will MediaStore from API level 30 -->
+
     <application
         android:label="cemana"
         android:name="${applicationName}"

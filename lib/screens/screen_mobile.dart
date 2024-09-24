@@ -1,7 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:cemana/providers/provider.dart';
+import 'package:cemana/utils/file_util.dart';
 import 'package:datalocal/datalocal.dart';
 import 'package:datalocal/datalocal_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class ScreenMobile extends StatefulWidget {
@@ -210,13 +216,45 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                                                 width: 16,
                                                               ),
                                                               Expanded(
-                                                                child: Text(
-                                                                  data.get(DataKey(
-                                                                          "name")) ??
-                                                                      "-",
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
+                                                                child: Row(
+                                                                  children: [
+                                                                    Expanded(
+                                                                      child:
+                                                                          Text(
+                                                                        data.get(DataKey("name")) ??
+                                                                            "-",
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                      ),
+                                                                    ),
+                                                                    Container(
+                                                                      padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                          horizontal:
+                                                                              16,
+                                                                          vertical:
+                                                                              4),
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: data.get(DataKey("inference.type")) ==
+                                                                                "Image"
+                                                                            ? Colors.blue
+                                                                            : Colors.green,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        data.get(DataKey("inference.type")) ??
+                                                                            "-",
+                                                                        style:
+                                                                            const TextStyle(
+                                                                          fontSize:
+                                                                              10,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                               ),
                                                             ],
@@ -264,69 +302,322 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                         (data.get(DataKey("message.role")) ??
                                                 "")
                                             .toString();
-                                    return Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 8,
-                                        horizontal: 16,
-                                      ),
-                                      width: width,
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Builder(
-                                            builder: (_) {
-                                              if (role == "user") {
-                                                return Container(
-                                                  height: 30,
-                                                  width: 30,
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.blue,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100),
-                                                  ),
-                                                );
-                                              }
-                                              if (role == "assistant" &&
-                                                  index > 0 &&
-                                                  datas[index - 1].get(DataKey(
-                                                          "message.role")) ==
-                                                      "assistant") {
-                                                return const SizedBox(
-                                                  height: 30,
-                                                  width: 30,
-                                                );
-                                              }
-                                              return Container(
-                                                height: 30,
-                                                width: 30,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.purple,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100),
-                                                ),
-                                                alignment: Alignment.center,
-                                              );
-                                            },
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 8,
+                                            horizontal: 16,
                                           ),
-                                          const SizedBox(
-                                            width: 16,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              (data.get(DataKey(
-                                                          "message.content")) ??
-                                                      "")
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                fontSize: 16,
+                                          width: width,
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Builder(
+                                                builder: (_) {
+                                                  if (role == "user") {
+                                                    return Container(
+                                                      height: 30,
+                                                      width: 30,
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.blue,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                      ),
+                                                    );
+                                                  }
+                                                  if (role == "assistant" &&
+                                                      index > 0 &&
+                                                      datas[index - 1].get(DataKey(
+                                                              "message.role")) ==
+                                                          "assistant") {
+                                                    return const SizedBox(
+                                                      height: 30,
+                                                      width: 30,
+                                                    );
+                                                  }
+                                                  return Container(
+                                                    height: 30,
+                                                    width: 30,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.purple,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                  );
+                                                },
                                               ),
-                                            ),
+                                              const SizedBox(
+                                                width: 16,
+                                              ),
+                                              Expanded(
+                                                child: Builder(
+                                                  builder: (context) {
+                                                    if (data.get(DataKey(
+                                                            "message.type")) ==
+                                                        "Image") {
+                                                      return Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          SizedBox(
+                                                            height: 250,
+                                                            width: 250,
+                                                            child: ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
+                                                              child:
+                                                                  Image.memory(
+                                                                base64Decode(
+                                                                    data.get(DataKey(
+                                                                            "message.content")) ??
+                                                                        ""),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 50,
+                                                            width: 250,
+                                                            child: Row(
+                                                              children: [
+                                                                const Expanded(
+                                                                  child:
+                                                                      SizedBox(),
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    FileUtil().saveFileFromBytes(
+                                                                        context,
+                                                                        bytes: base64Decode(data.get(DataKey("message.content")) ??
+                                                                            ""),
+                                                                        name:
+                                                                            "${DateTime.now()}.png");
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .symmetric(
+                                                                      horizontal:
+                                                                          16,
+                                                                      vertical:
+                                                                          8,
+                                                                    ),
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Colors
+                                                                          .purple,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              20),
+                                                                    ),
+                                                                    child:
+                                                                        const Row(
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .download,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              8,
+                                                                        ),
+                                                                        Text(
+                                                                          "Download",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    }
+                                                    return Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
+                                                      children: [
+                                                        SizedBox(
+                                                          width: width,
+                                                          child: SelectableText(
+                                                            (data.get(DataKey(
+                                                                        "message.content")) ??
+                                                                    "")
+                                                                .toString(),
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 16,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        if (role ==
+                                                                "assistant" &&
+                                                            data.get(DataKey(
+                                                                    "isFinished")) ==
+                                                                true)
+                                                          SizedBox(
+                                                            width: width,
+                                                            height: 50,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    String m =
+                                                                        "";
+                                                                    bool end =
+                                                                        false;
+                                                                    int i = 0;
+                                                                    do {
+                                                                      try {
+                                                                        if (datas[index - i].get(DataKey("message.role")) ==
+                                                                            "user") {
+                                                                          throw "";
+                                                                        }
+                                                                        m = "${datas[index - i].get(DataKey("message.content"))} \n $m";
+                                                                        i++;
+                                                                      } catch (e) {
+                                                                        end =
+                                                                            true;
+                                                                      }
+                                                                    } while (end ==
+                                                                        false);
+                                                                    await Clipboard.setData(
+                                                                        ClipboardData(
+                                                                            text:
+                                                                                m));
+                                                                    double w;
+                                                                    if (width <
+                                                                        720) {
+                                                                      w = width -
+                                                                          32;
+                                                                    } else {
+                                                                      w = width -
+                                                                          32;
+                                                                      if (w >
+                                                                          500) {
+                                                                        w = 500;
+                                                                      }
+                                                                    }
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                            SnackBar(
+                                                                      width: w,
+                                                                      content:
+                                                                          const Text(
+                                                                              "Disimpan di papan clip"),
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .blue,
+                                                                      behavior:
+                                                                          SnackBarBehavior
+                                                                              .floating,
+                                                                      action:
+                                                                          SnackBarAction(
+                                                                        label:
+                                                                            'Tutup',
+                                                                        disabledTextColor:
+                                                                            Colors.white,
+                                                                        textColor:
+                                                                            Colors.yellow,
+                                                                        onPressed:
+                                                                            () {
+                                                                          ScaffoldMessenger.of(context)
+                                                                              .hideCurrentSnackBar();
+                                                                        },
+                                                                      ),
+                                                                    ));
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .symmetric(
+                                                                      horizontal:
+                                                                          16,
+                                                                      vertical:
+                                                                          8,
+                                                                    ),
+                                                                    decoration:
+                                                                        BoxDecoration(
+                                                                      color: Colors
+                                                                          .purple,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              20),
+                                                                    ),
+                                                                    child:
+                                                                        const Row(
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .copy,
+                                                                          color:
+                                                                              Colors.white,
+                                                                        ),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              8,
+                                                                        ),
+                                                                        Text(
+                                                                          "Salin",
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                      ],
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        if (index == datas.length - 1 &&
+                                            a.chatLoading[widget.id] == true)
+                                          Container(
+                                            height: 45,
+                                            width: 45,
+                                            margin: const EdgeInsets.symmetric(
+                                              vertical: 8,
+                                              horizontal: 16,
+                                            ),
+                                            child:
+                                                Image.asset("src/loading.gif"),
+                                          ),
+                                      ],
                                     );
                                   },
                                 );
@@ -374,6 +665,7 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                     },
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
+                                      hintText: "Apa yang ada di pikiran mu?",
                                     ),
                                     onTap: () {},
                                     controller: a.controller[widget.id ?? ""],
