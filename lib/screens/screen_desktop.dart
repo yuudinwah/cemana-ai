@@ -20,6 +20,7 @@ class ScreenDesktop extends StatefulWidget {
 
 class _ScreenDesktopState extends State<ScreenDesktop> {
   bool minimize = false;
+  ScrollController controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -54,7 +55,12 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                         );
                       }
                       return FutureBuilder<DataQuery>(
-                        future: a.room.find(),
+                        future: a.room.find(sorts: [
+                          DataSort(
+                              key: DataKey("#updatedAt",
+                                  onKeyCatch: "#createdAt"),
+                              desc: false)
+                        ]),
                         builder: (_, snapshot) {
                           if (!snapshot.hasData) {
                             return const SizedBox();
@@ -121,6 +127,7 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                 ),
                               Expanded(
                                 child: ListView.builder(
+                                  controller: controller,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 16,
                                   ),
@@ -683,7 +690,8 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                           Expanded(
                                             child: TextField(
                                               onSubmitted: (_) {
-                                                a.sendMessage(
+                                                a
+                                                    .sendMessage(
                                                   context,
                                                   id: widget.id,
                                                   inference: room == null
@@ -691,7 +699,16 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                       : room.get(DataKey(
                                                               "inference")) ??
                                                           a.selectedInference,
-                                                );
+                                                )
+                                                    .then((_) {
+                                                  controller.animateTo(
+                                                    controller.position
+                                                        .maxScrollExtent,
+                                                    duration: const Duration(
+                                                        milliseconds: 250),
+                                                    curve: Curves.fastOutSlowIn,
+                                                  );
+                                                });
                                               },
                                               decoration: const InputDecoration(
                                                 border: InputBorder.none,
@@ -704,7 +721,8 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              a.sendMessage(
+                                              a
+                                                  .sendMessage(
                                                 context,
                                                 id: widget.id,
                                                 inference: room == null
@@ -712,7 +730,16 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                     : room.get(DataKey(
                                                             "inference")) ??
                                                         a.selectedInference,
-                                              );
+                                              )
+                                                  .then((_) {
+                                                controller.animateTo(
+                                                  controller
+                                                      .position.maxScrollExtent,
+                                                  duration: const Duration(
+                                                      milliseconds: 250),
+                                                  curve: Curves.fastOutSlowIn,
+                                                );
+                                              });
                                             },
                                             child: const Icon(Icons.send),
                                           ),

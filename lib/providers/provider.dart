@@ -163,7 +163,7 @@ class AppProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void sendMessage(BuildContext context,
+  Future<void> sendMessage(BuildContext context,
       {String? id, required Map<String, dynamic> inference}) async {
     try {
       String content = controller[id ?? ""]!.text;

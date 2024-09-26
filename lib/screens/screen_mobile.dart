@@ -19,6 +19,8 @@ class ScreenMobile extends StatefulWidget {
 }
 
 class _ScreenMobileState extends State<ScreenMobile> {
+  ScrollController controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -143,7 +145,12 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                           );
                                         }
                                         return FutureBuilder<DataQuery>(
-                                          future: a.room.find(),
+                                          future: a.room.find(sorts: [
+                                            DataSort(
+                                                key: DataKey("#updatedAt",
+                                                    onKeyCatch: "#createdAt"),
+                                                desc: false)
+                                          ]),
                                           builder: (_, snapshot) {
                                             if (!snapshot.hasData) {
                                               return const SizedBox();
@@ -292,6 +299,7 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                 List<DataItem> datas = query.data;
 
                                 return ListView.builder(
+                                  controller: controller,
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 32,
                                   ),
@@ -654,14 +662,25 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                 Expanded(
                                   child: TextField(
                                     onSubmitted: (_) {
-                                      a.sendMessage(
+                                      // FocusScope.of(context)
+                                      //     .requestFocus(FocusNode());
+                                      a
+                                          .sendMessage(
                                         context,
                                         id: widget.id,
                                         inference: room == null
                                             ? a.selectedInference
                                             : room.get(DataKey("inference")) ??
                                                 a.selectedInference,
-                                      );
+                                      )
+                                          .then((_) {
+                                        controller.animateTo(
+                                          controller.position.maxScrollExtent,
+                                          duration:
+                                              const Duration(milliseconds: 250),
+                                          curve: Curves.fastOutSlowIn,
+                                        );
+                                      });
                                     },
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
@@ -673,14 +692,25 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    a.sendMessage(
+                                    // FocusScope.of(context)
+                                    //     .requestFocus(FocusNode());
+                                    a
+                                        .sendMessage(
                                       context,
                                       id: widget.id,
                                       inference: room == null
                                           ? a.selectedInference
                                           : room.get(DataKey("inference")) ??
                                               a.selectedInference,
-                                    );
+                                    )
+                                        .then((_) {
+                                      controller.animateTo(
+                                        controller.position.maxScrollExtent,
+                                        duration:
+                                            const Duration(milliseconds: 250),
+                                        curve: Curves.fastOutSlowIn,
+                                      );
+                                    });
                                   },
                                   child: const Icon(Icons.send),
                                 ),
