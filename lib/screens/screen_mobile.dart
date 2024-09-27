@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:convert';
-
 import 'package:cemana/providers/provider.dart';
 import 'package:cemana/utils/file_util.dart';
 import 'package:datalocal/datalocal.dart';
@@ -145,12 +143,15 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                           );
                                         }
                                         return FutureBuilder<DataQuery>(
-                                          future: a.room.find(sorts: [
-                                            DataSort(
-                                                key: DataKey("#updatedAt",
+                                          future: a.room.find(
+                                            sorts: [
+                                              DataSort(
+                                                key: DataKey("#createdAt",
                                                     onKeyCatch: "#createdAt"),
-                                                desc: false)
-                                          ]),
+                                                desc: true,
+                                              )
+                                            ],
+                                          ),
                                           builder: (_, snapshot) {
                                             if (!snapshot.hasData) {
                                               return const SizedBox();
@@ -370,93 +371,105 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                                     if (data.get(DataKey(
                                                             "message.type")) ==
                                                         "Image") {
-                                                      return Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          SizedBox(
-                                                            height: 250,
-                                                            width: 250,
-                                                            child: ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
+                                                      if (data.files.isEmpty) {
+                                                        return const SizedBox();
+                                                      }
+                                                      if (data.files.isEmpty) {
+                                                        return const SizedBox();
+                                                      }
+                                                      return FutureBuilder(
+                                                        future: data.files.first
+                                                            .getBytes(),
+                                                        builder: (_, snapshot) {
+                                                          if (!snapshot
+                                                              .hasData) {
+                                                            return const Center(
                                                               child:
-                                                                  Image.memory(
-                                                                base64Decode(
-                                                                    data.get(DataKey(
-                                                                            "message.content")) ??
-                                                                        ""),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 50,
-                                                            width: 250,
-                                                            child: Row(
-                                                              children: [
-                                                                const Expanded(
-                                                                  child:
-                                                                      SizedBox(),
-                                                                ),
-                                                                InkWell(
-                                                                  onTap: () {
-                                                                    FileUtil().saveFileFromBytes(
-                                                                        context,
-                                                                        bytes: base64Decode(data.get(DataKey("message.content")) ??
-                                                                            ""),
-                                                                        name:
-                                                                            "${DateTime.now()}.png");
-                                                                  },
-                                                                  child:
-                                                                      Container(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .symmetric(
-                                                                      horizontal:
-                                                                          16,
-                                                                      vertical:
-                                                                          8,
-                                                                    ),
-                                                                    decoration:
-                                                                        BoxDecoration(
-                                                                      color: Colors
-                                                                          .purple,
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
+                                                                  CircularProgressIndicator(),
+                                                            );
+                                                          }
+                                                          return Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              SizedBox(
+                                                                height: 250,
+                                                                width: 250,
+                                                                child:
+                                                                    ClipRRect(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
                                                                               20),
+                                                                  child: Image.memory(
+                                                                      snapshot
+                                                                          .data!),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 50,
+                                                                width: 250,
+                                                                child: Row(
+                                                                  children: [
+                                                                    const Expanded(
+                                                                      child:
+                                                                          SizedBox(),
                                                                     ),
-                                                                    child:
-                                                                        const Row(
-                                                                      children: [
-                                                                        Icon(
-                                                                          Icons
-                                                                              .download,
-                                                                          color:
-                                                                              Colors.white,
-                                                                        ),
-                                                                        SizedBox(
-                                                                          width:
+                                                                    InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        FileUtil()
+                                                                            .saveFileFromBytes(
+                                                                          context,
+                                                                          bytes:
+                                                                              snapshot.data!,
+                                                                          name:
+                                                                              "${DateTime.now()}.png",
+                                                                        );
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        padding:
+                                                                            const EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              16,
+                                                                          vertical:
                                                                               8,
                                                                         ),
-                                                                        Text(
-                                                                          "Download",
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.white,
-                                                                          ),
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              Colors.purple,
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(20),
                                                                         ),
-                                                                      ],
+                                                                        child:
+                                                                            const Row(
+                                                                          children: [
+                                                                            Icon(
+                                                                              Icons.download,
+                                                                              color: Colors.white,
+                                                                            ),
+                                                                            SizedBox(
+                                                                              width: 8,
+                                                                            ),
+                                                                            Text(
+                                                                              "Download",
+                                                                              style: TextStyle(
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
                                                                     ),
-                                                                  ),
+                                                                  ],
                                                                 ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
+                                                              ),
+                                                            ],
+                                                          );
+                                                        },
                                                       );
                                                     }
                                                     return Column(
@@ -704,12 +717,16 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                               a.selectedInference,
                                     )
                                         .then((_) {
-                                      controller.animateTo(
-                                        controller.position.maxScrollExtent,
-                                        duration:
-                                            const Duration(milliseconds: 250),
-                                        curve: Curves.fastOutSlowIn,
-                                      );
+                                      try {
+                                        controller.animateTo(
+                                          controller.position.maxScrollExtent,
+                                          duration:
+                                              const Duration(milliseconds: 250),
+                                          curve: Curves.fastOutSlowIn,
+                                        );
+                                      } catch (e) {
+                                        //
+                                      }
                                     });
                                   },
                                   child: const Icon(Icons.send),

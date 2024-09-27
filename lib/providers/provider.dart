@@ -185,7 +185,7 @@ class AppProvider with ChangeNotifier {
         "roomId": r.id,
       });
       refresh();
-
+      room.updateOne(r.id, value: {});
       await getAnswer(r.id, inference: inference);
 
       refresh();
@@ -331,14 +331,15 @@ class AppProvider with ChangeNotifier {
         // response.bodyBytes.toString();
         Map<String, dynamic> content = {
           "role": "assistant",
-          "content": base64Encode(response.bodyBytes),
           "type": "Image",
         };
-        await message.insertOne({
+        DataItem d = await message.insertOne({
           "message": content,
           "roomId": id,
           "isFinished": true,
         });
+        await d.saveFile(response.bodyBytes);
+        print("file saved");
       } else {
         //
       }
