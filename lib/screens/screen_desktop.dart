@@ -77,7 +77,7 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                 ),
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(context, "/");
+                                    Navigator.pushNamed(context, "#");
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
@@ -668,55 +668,98 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                 ),
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                                Builder(
-                                  builder: (_) {
-                                    if (a.controller[widget.id ?? ""] == null) {
-                                      WidgetsBinding.instance
-                                          .addPostFrameCallback((_) {
-                                        a.controller[widget.id ?? ""] =
-                                            TextEditingController();
-                                        a.refresh();
-                                      });
-                                      return const SizedBox();
-                                    }
-                                    return Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 32,
-                                        vertical: 8,
-                                      ),
-                                      width: width,
-                                      height: 80,
-                                      constraints: const BoxConstraints(
-                                        maxWidth: 720,
-                                        minWidth: 260,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.purple[50],
-                                        borderRadius: BorderRadius.circular(80),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: TextField(
-                                              onSubmitted: (_) {
-                                                a
-                                                    .sendMessage(
-                                                  context,
-                                                  id: widget.id,
-                                                  inference: room == null
-                                                      ? a.selectedInference
-                                                      : room.get(DataKey(
-                                                              "inference")) ??
-                                                          a.selectedInference,
-                                                )
-                                                    .then((_) {
-                                                  try {
+                            SizedBox(
+                              width: 720,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                  Expanded(
+                                    child: Builder(
+                                      builder: (_) {
+                                        if (a.controller[widget.id ?? ""] ==
+                                            null) {
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback((_) {
+                                            a.controller[widget.id ?? ""] =
+                                                TextEditingController();
+                                            a.refresh();
+                                          });
+                                          return const SizedBox();
+                                        }
+                                        return Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 32,
+                                            vertical: 8,
+                                          ),
+                                          width: width,
+                                          height: 80,
+                                          constraints: const BoxConstraints(
+                                            maxWidth: 720,
+                                            minWidth: 260,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.purple[50],
+                                            borderRadius:
+                                                BorderRadius.circular(80),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: TextField(
+                                                  onSubmitted: (_) {
+                                                    a
+                                                        .sendMessage(
+                                                      context,
+                                                      id: widget.id,
+                                                      inference: room == null
+                                                          ? a.selectedInference
+                                                          : room.get(DataKey(
+                                                                  "inference")) ??
+                                                              a.selectedInference,
+                                                    )
+                                                        .then((_) {
+                                                      try {
+                                                        controller.animateTo(
+                                                          controller.position
+                                                              .maxScrollExtent,
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      250),
+                                                          curve: Curves
+                                                              .fastOutSlowIn,
+                                                        );
+                                                      } catch (e) {
+                                                        //
+                                                      }
+                                                    });
+                                                  },
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    border: InputBorder.none,
+                                                    hintText:
+                                                        "Apa yang ada di pikiran mu?",
+                                                  ),
+                                                  controller: a.controller[
+                                                      widget.id ?? ""],
+                                                ),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  a
+                                                      .sendMessage(
+                                                    context,
+                                                    id: widget.id,
+                                                    inference: room == null
+                                                        ? a.selectedInference
+                                                        : room.get(DataKey(
+                                                                "inference")) ??
+                                                            a.selectedInference,
+                                                  )
+                                                      .then((_) {
                                                     controller.animateTo(
                                                       controller.position
                                                           .maxScrollExtent,
@@ -725,53 +768,21 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                       curve:
                                                           Curves.fastOutSlowIn,
                                                     );
-                                                  } catch (e) {
-                                                    //
-                                                  }
-                                                });
-                                              },
-                                              decoration: const InputDecoration(
-                                                border: InputBorder.none,
-                                                hintText:
-                                                    "Apa yang ada di pikiran mu?",
+                                                  });
+                                                },
+                                                child: const Icon(Icons.send),
                                               ),
-                                              controller:
-                                                  a.controller[widget.id ?? ""],
-                                            ),
+                                            ],
                                           ),
-                                          InkWell(
-                                            onTap: () {
-                                              a
-                                                  .sendMessage(
-                                                context,
-                                                id: widget.id,
-                                                inference: room == null
-                                                    ? a.selectedInference
-                                                    : room.get(DataKey(
-                                                            "inference")) ??
-                                                        a.selectedInference,
-                                              )
-                                                  .then((_) {
-                                                controller.animateTo(
-                                                  controller
-                                                      .position.maxScrollExtent,
-                                                  duration: const Duration(
-                                                      milliseconds: 250),
-                                                  curve: Curves.fastOutSlowIn,
-                                                );
-                                              });
-                                            },
-                                            child: const Icon(Icons.send),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ),
-                                const SizedBox(
-                                  width: 16,
-                                ),
-                              ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 16,
+                                  ),
+                                ],
+                              ),
                             ),
                             const SizedBox(
                               height: 16,
