@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cemana/providers/provider.dart';
+import 'package:cemana/utils/color_util.dart';
 import 'package:cemana/utils/file_util.dart';
 import 'package:datalocal/datalocal.dart';
 import 'package:datalocal/datalocal_extension.dart';
@@ -42,7 +43,7 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                   milliseconds: 250,
                 ),
                 child: Container(
-                  color: Colors.purple[50],
+                  color: CemanaColors.backgroundColor,
                   width: 300,
                   height: height,
                   child: Builder(
@@ -88,7 +89,7 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                     width: 160,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(30),
-                                      color: Colors.purple[100]!,
+                                      color: CemanaColors.primaryColor,
                                     ),
                                     alignment: Alignment.centerLeft,
                                     child: const Row(
@@ -97,11 +98,19 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Icon(Icons.add),
+                                        Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                        ),
                                         SizedBox(
                                           width: 16,
                                         ),
-                                        Text("Chat baru"),
+                                        Text(
+                                          "Chat baru",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -149,7 +158,7 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                           borderRadius:
                                               BorderRadius.circular(30),
                                           color: selected
-                                              ? Colors.purple[200]
+                                              ? CemanaColors.hoverColor
                                               : null,
                                         ),
                                         alignment: Alignment.centerLeft,
@@ -170,6 +179,9 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                     ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 4,
                                                   ),
                                                   Container(
                                                     padding: const EdgeInsets
@@ -250,7 +262,7 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            const Text("emana"),
+                            const Text("Cemana"),
                             const SizedBox(
                               width: 16,
                             ),
@@ -268,7 +280,10 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 16,
                                       ),
-                                      child: Text(_['name'] ?? "-"),
+                                      child: Text(
+                                        _['name'] ?? "-",
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
                                     ),
                                   );
                                 }).toList(),
@@ -317,7 +332,7 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                             "Halo,\nApa yang bisa saya bantu kali ini?",
                                             style: TextStyle(
                                               fontSize: 32,
-                                              color: Colors.purple,
+                                              color: CemanaColors.primaryColor,
                                             ),
                                           ),
                                         ),
@@ -394,8 +409,8 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                                     width: 30,
                                                                     decoration:
                                                                         BoxDecoration(
-                                                                      color: Colors
-                                                                          .blue,
+                                                                      color: CemanaColors
+                                                                          .primaryColor,
                                                                       borderRadius:
                                                                           BorderRadius.circular(
                                                                               100),
@@ -419,8 +434,8 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                                   width: 30,
                                                                   decoration:
                                                                       BoxDecoration(
-                                                                    color: Colors
-                                                                        .purple,
+                                                                    color: CemanaColors
+                                                                        .hoverColor,
                                                                     borderRadius:
                                                                         BorderRadius.circular(
                                                                             100),
@@ -712,13 +727,13 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                           width: width,
                                           height: 80,
                                           constraints: const BoxConstraints(
-                                            maxWidth: 720,
+                                            maxWidth: 700,
                                             minWidth: 260,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: Colors.purple[50],
+                                            color: CemanaColors.backgroundColor,
                                             borderRadius:
-                                                BorderRadius.circular(80),
+                                                BorderRadius.circular(20),
                                           ),
                                           child: Row(
                                             children: [
@@ -755,8 +770,7 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                   decoration:
                                                       const InputDecoration(
                                                     border: InputBorder.none,
-                                                    hintText:
-                                                        "Apa yang ada di pikiran mu?",
+                                                    hintText: "Tanya apapun...",
                                                   ),
                                                   controller: a.controller[
                                                       widget.id ?? ""],
@@ -785,7 +799,23 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                     );
                                                   });
                                                 },
-                                                child: const Icon(Icons.send),
+                                                child: Container(
+                                                  height: 40,
+                                                  width: 40,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            6),
+                                                    color:
+                                                        CemanaColors.hoverColor,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.arrow_upward_rounded,
+                                                    weight: 900,
+                                                    color: CemanaColors
+                                                        .primaryColor,
+                                                  ),
+                                                ),
                                               ),
                                             ],
                                           ),

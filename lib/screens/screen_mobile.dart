@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cemana/providers/provider.dart';
+import 'package:cemana/utils/color_util.dart';
 import 'package:cemana/utils/file_util.dart';
 import 'package:datalocal/datalocal.dart';
 import 'package:datalocal/datalocal_extension.dart';
@@ -58,7 +59,7 @@ class _ScreenMobileState extends State<ScreenMobile> {
                       ),
                     Expanded(
                       child: Text(
-                        "${room?.get(DataKey("name")) ?? "emana"}",
+                        "${room?.get(DataKey("name")) ?? "Cemana"}",
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -131,7 +132,7 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                         "Halo,\nApa yang bisa saya bantu kali ini?",
                                         style: TextStyle(
                                           fontSize: 32,
-                                          color: Colors.purple,
+                                          color: CemanaColors.primaryColor,
                                         ),
                                       ),
                                     ),
@@ -235,6 +236,9 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                                                             TextOverflow.ellipsis,
                                                                       ),
                                                                     ),
+                                                                    const SizedBox(
+                                                                      width: 4,
+                                                                    ),
                                                                     Container(
                                                                       padding: const EdgeInsets
                                                                           .symmetric(
@@ -332,7 +336,8 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                                       height: 30,
                                                       width: 30,
                                                       decoration: BoxDecoration(
-                                                        color: Colors.blue,
+                                                        color: CemanaColors
+                                                            .primaryColor,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(100),
@@ -353,7 +358,8 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                                     height: 30,
                                                     width: 30,
                                                     decoration: BoxDecoration(
-                                                      color: Colors.purple,
+                                                      color: CemanaColors
+                                                          .hoverColor,
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               100),
@@ -667,8 +673,8 @@ class _ScreenMobileState extends State<ScreenMobile> {
                             ),
                             height: 80,
                             decoration: BoxDecoration(
-                              color: Colors.purple[50],
-                              borderRadius: BorderRadius.circular(80),
+                              color: CemanaColors.backgroundColor,
+                              borderRadius: BorderRadius.circular(20),
                             ),
                             child: Row(
                               children: [
@@ -697,7 +703,7 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                     },
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
-                                      hintText: "Apa yang ada di pikiran mu?",
+                                      hintText: "Tanya apapun...",
                                     ),
                                     onTap: () {},
                                     controller: a.controller[widget.id ?? ""],
@@ -729,7 +735,18 @@ class _ScreenMobileState extends State<ScreenMobile> {
                                       }
                                     });
                                   },
-                                  child: const Icon(Icons.send),
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      color: CemanaColors.hoverColor,
+                                    ),
+                                    child: const Icon(
+                                      Icons.arrow_upward_rounded,
+                                      weight: 900,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
