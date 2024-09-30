@@ -6,7 +6,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # firebase deploy --only hosting:cemana
 # flutter pub upgrade --major-versions
 
-version: 1.0.0+3
+version: 1.0.1+5
 
 environment:
   sdk: '>=3.4.1 <4.0.0'
@@ -17,7 +17,8 @@ dependencies:
 
   cupertino_icons: ^1.0.6
   dio: ^5.7.0
-  datalocal: ^1.0.26
+  datalocal:
+    path: ../datalocal/
   provider: ^6.1.2
   http: ^1.2.2
   file_saver: ^0.2.14

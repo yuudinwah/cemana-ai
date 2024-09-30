@@ -373,6 +373,9 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                       minWidth: 200,
                                                     ),
                                                     child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Row(
                                                           crossAxisAlignment:
@@ -441,7 +444,10 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                                     if (data
                                                                         .files
                                                                         .isEmpty) {
-                                                                      return const SizedBox();
+                                                                      return const SizedBox(
+                                                                        child: Text(
+                                                                            "0"),
+                                                                      );
                                                                     }
                                                                     return FutureBuilder(
                                                                       future: data
@@ -639,17 +645,26 @@ class _ScreenDesktopState extends State<ScreenDesktop> {
                                                             a.chatLoading[widget
                                                                     .id] ==
                                                                 true)
-                                                          Container(
-                                                            height: 45,
-                                                            width: 45,
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                              vertical: 8,
-                                                              horizontal: 16,
-                                                            ),
-                                                            child: Image.asset(
-                                                                "src/loading.gif"),
+                                                          Row(
+                                                            children: [
+                                                              const SizedBox(
+                                                                height: 30,
+                                                                width: 30,
+                                                              ),
+                                                              Container(
+                                                                height: 45,
+                                                                width: 45,
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                  vertical: 8,
+                                                                  horizontal:
+                                                                      16,
+                                                                ),
+                                                                child: Image.asset(
+                                                                    "src/loading.gif"),
+                                                              ),
+                                                            ],
                                                           ),
                                                       ],
                                                     ),
