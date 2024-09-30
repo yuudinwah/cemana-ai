@@ -1,6 +1,6 @@
 import 'package:cemana/providers/provider.dart';
 import 'package:cemana/screens/screen.dart';
-import 'package:cemana/utils/CemanaColors.dart';
+import 'package:cemana/utils/color_util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
