@@ -22,108 +22,122 @@ class AppProvider with ChangeNotifier {
     {
       "id": "qwen2-72b",
       "name": "Qwen2 72B",
-      "url": "https://qwen2-72b.lepton.run/api/v1/chat/completions",
+      "url": "https://qwen2-72b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "llama3-1-405b",
       "name": "Llama 3.1 405B",
-      "url": "https://llama3-1-405b.lepton.run/api/v1/chat/completions",
+      "url": "https://llama3-1-405b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "llama3-1-70b",
       "name": "Llama 3.1 70B",
-      "url": "https://llama3-1-70b.lepton.run/api/v1/chat/completions",
+      "url": "https://llama3-1-70b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "llama3-1-8b",
       "name": "Llama 3.1 8B",
-      "url": "https://llama3-1-8b.lepton.run/api/v1/chat/completions",
+      "url": "https://llama3-1-8b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "nous-hermes-llama2",
       "name": "Nous: Hermes 13B",
-      "url":
-          "https://nous-hermes-llama2-13b.lepton.run/api/v1/chat/completions",
+      "url": "https://nous-hermes-llama2-13b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "openchat-3-5",
       "name": "OpenChat 3.5",
-      "url": "https://openchat-3-5.lepton.run/api/v1/chat/completions",
+      "url": "https://openchat-3-5.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "wizardlm-2-7b",
       "name": "WizardLM-2 7B",
-      "url": "https://wizardlm-2-7b.lepton.run/api/v1/chat/completions",
+      "url": "https://wizardlm-2-7b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "llama3-8b",
       "name": "Llama3 8B",
-      "url": "https://llama3-8b.lepton.run/api/v1/chat/completions",
+      "url": "https://llama3-8b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "llama3-70b",
       "name": "Llama3 70b",
-      "url": "https://llama3-70b.lepton.run/api/v1/chat/completions",
+      "url": "https://llama3-70b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "wizardlm-2-8x22b",
       "name": "WizardLM-2 8x22B",
-      "url": "https://wizardlm-2-8x22b.lepton.run/api/v1/chat/completions",
+      "url": "https://wizardlm-2-8x22b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "mistral-7b",
       "name": "Mistral 7B",
-      "url": "https://mistral-7b.lepton.run/api/v1/chat/completions",
+      "url": "https://mistral-7b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "toppy-m-7b",
       "name": "Toppy M 7B",
-      "url": "https://toppy-m-7b.lepton.run/api/v1/chat/completions",
+      "url": "https://toppy-m-7b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "dolphin-mixtral-8x7b",
       "name": "Dolphin Mixtral 8x7b",
-      "url": "https://dolphin-mixtral-8x7b.lepton.run/api/v1/chat/completions",
+      "url": "https://dolphin-mixtral-8x7b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "mixtral-8x7b",
       "name": "Mixtral 8x7b",
-      "url": "https://mixtral-8x7b.lepton.run/api/v1/chat/completions",
+      "url": "https://mixtral-8x7b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "llama2-13b",
       "name": "Llama2 13b",
-      "url": "https://llama2-13b.lepton.run/api/v1/chat/completions",
+      "url": "https://llama2-13b.lepton.run/api/v1/",
       "temperature": 0.7,
       "type": "LLM",
+      "tool": "leptonai",
     },
     {
       "id": "sdxl",
@@ -137,6 +151,7 @@ class AppProvider with ChangeNotifier {
       "steps": 30,
       "use_refiner": false,
       "type": "Image",
+      "tool": "leptonai",
     },
   ];
 
@@ -233,48 +248,24 @@ class AppProvider with ChangeNotifier {
         query.data.map((_) => _.get(DataKey("message"))).toList());
     if (inference['type'] == "LLM") {
       Response response;
-      if (kIsWeb) {
-        response = await dio.post(
-          'https://api.lamun.my.id/api/forwarder',
-          data: {
-            "url": inference['url'],
-            "body": {
-              "model": inference['id'],
-              "messages": messages,
-              "temperature": inference['temperature'] ?? 0.7,
-            },
-            "headers": {"Authorization": "Bearer ${Credential.apiKey}"}
-          },
-        );
-      } else {
-        response = await dio.post(inference['url'],
-            data: {
-              "model": inference['id'],
-              "messages": messages,
-              "temperature": inference['temperature'] ?? 0.7,
-            },
-            options: Options(
-                headers: {"Authorization": "Bearer ${Credential.apiKey}"}));
-      }
+      response = await dio.post(
+        'http://127.0.0.1:3000/api/ai/${inference['tool']}',
+        data: {
+          "model": inference['id'],
+          "messages": messages,
+        },
+        options: Options(
+          headers: {"apikey": Credential.apiKey, "baseurl": inference['url']},
+        ),
+      );
 
       if (response.statusCode == 200) {
         Map<String, dynamic> data = response.data;
-        Map<String, dynamic> content = data['choices'][0]['message'];
-
-        if (data['choices'][0]['finish_reason'] == "length") {
-          getAnswer(id, inference: inference);
-          await message.insertOne({
-            "message": content,
-            "roomId": id,
-            "isFinished": false,
-          });
-        } else {
-          await message.insertOne({
-            "message": content,
-            "roomId": id,
-            "isFinished": true,
-          });
-        }
+        await message.insertOne({
+          "message": data,
+          "roomId": id,
+          "isFinished": true,
+        });
       } else {
         //
       }
