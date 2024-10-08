@@ -1,8 +1,8 @@
 name: cemana
 description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-# flutter build appbundle --release --no-tree-shake-icons
-# flutter build web --release --no-tree-shake-icons
+# flutter build appbundle --release --no-tree-shake-icons --dart-define-from-file=env.json
+# flutter build web --release --no-tree-shake-icons --dart-define-from-file=env.json
 # firebase deploy --only hosting:cemana
 # flutter pub upgrade --major-versions
 

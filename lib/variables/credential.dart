@@ -1,3 +1,4 @@
 class Credential {
-  static String apiKey = "vwpy9dmrtx496h0dv8uyrnsdc0as0qbc";
+  static String leptonAPIKey = const String.fromEnvironment('lepton-apikey',
+      defaultValue: 'LEPTON_API_KEY');
 }

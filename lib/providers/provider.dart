@@ -255,7 +255,10 @@ class AppProvider with ChangeNotifier {
           "messages": messages,
         },
         options: Options(
-          headers: {"apikey": Credential.apiKey, "baseurl": inference['url']},
+          headers: {
+            "apikey": Credential.leptonAPIKey,
+            "baseurl": inference['url']
+          },
         ),
       );
 
@@ -289,7 +292,7 @@ class AppProvider with ChangeNotifier {
               "use_refiner": inference['use_refiner'],
             },
             "headers": {
-              "Authorization": "Bearer ${Credential.apiKey}",
+              "Authorization": "Bearer ${Credential.leptonAPIKey}",
               'Content-Type': 'application/json',
             }
           }),
@@ -298,7 +301,7 @@ class AppProvider with ChangeNotifier {
         response = await http.post(
           Uri.parse(inference['url']),
           headers: {
-            "Authorization": "Bearer ${Credential.apiKey}",
+            "Authorization": "Bearer ${Credential.leptonAPIKey}",
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'POST',
