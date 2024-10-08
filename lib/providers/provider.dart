@@ -249,7 +249,7 @@ class AppProvider with ChangeNotifier {
     if (inference['type'] == "LLM") {
       Response response;
       response = await dio.post(
-        'http://127.0.0.1:3000/api/ai/${inference['tool']}',
+        'https://api.lamun.my.id/api/ai/${inference['tool']}',
         data: {
           "model": inference['id'],
           "messages": messages,
